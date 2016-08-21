@@ -12,8 +12,6 @@ var gravatar = require('gravatar');
 module.exports = function(app,io){
 
 	app.get('/', function(req, res){
-
-		// Render views/home.html
 		res.render('home');
 	});
 
@@ -27,9 +25,11 @@ module.exports = function(app,io){
 	});
 
 	app.get('/chat/:id', function(req,res){
-
-		// Render the chant.html view
 		res.render('chat');
+	});
+
+	app.get('/about', function(req,res){
+		res.render('about');
 	});
 
 	// Initialize a new socket.io application, named 'chat'
