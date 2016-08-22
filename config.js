@@ -1,20 +1,17 @@
-// This file handles the configuration of the app.
-// It is required by app.js
-
-var express = require('express');
+var express = require('express'), 
+	fs = require('fs'), 
+	mongoose = require('mongoose'), 
+	bodyParser = require('body-parser');
 
 module.exports = function(app, io){
+	mongoose.connect('mongodb://localhost/socketio');
 
-	// Set .html as the default template extension
-	app.set('view engine', 'html');
+	app.use(bodyParser.json());
+	app.use(bodyParser.urlencoded({extended: false}));
 
-	// Initialize the ejs template engine
-	app.engine('html', require('ejs').renderFile);
-
-	// Tell express where it can find the templates
+	app.set('view engine', 'ejs');
+	app.engine('ejs', require('ejs').renderFile);
 	app.set('views', __dirname + '/views');
 
-	// Make the files in the public folder available to the world
 	app.use(express.static(__dirname + '/public'));
-
 };
