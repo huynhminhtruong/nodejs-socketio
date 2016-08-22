@@ -58,4 +58,8 @@ module.exports = function(app, io){
 			res.render('./about', {});
 		});
 	});
+
+	app.get('/emails', function(req,res){
+		res.render('./email', {});
+	});
 }
