@@ -13,6 +13,12 @@ var UserSchema = new Schema({
 		type: String,
 		trim: true
 	},
+	skills: [
+		{
+			type: String,
+			trim: true
+		}
+	],
 	avatar: {
 		type: String,
 		trim: true
