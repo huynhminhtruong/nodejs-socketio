@@ -20,13 +20,24 @@ module.exports = function(app, io){
 		});
 	});
 
+	app.get('/users/:id', function(req,res){
+		var mongoose = require('mongoose');
+		User.find({_id: req.params.id})
+		.populate('avatar').exec(function(error,data){
+			res.render('./welcome', {
+				user: data,
+				name: data.name
+			});
+		});
+	});
+
 	app.post('/users', uploads, function(req,res){
 		var name = req.body.name, 
 			email = req.body.email,
 			password = req.body.password, 
 			file = 'data:image/png;base64,' 
 			+ fs.readFileSync(req.file.path).toString('base64'), 
-		user = new User();
+			user = new User();
 
 		user.name = name;
 		user.email = email;
@@ -35,9 +46,7 @@ module.exports = function(app, io){
 		Image({name: req.file.name,image: file}).save(function(error,image){
 			user.avatar = image._id;
 			user.save(function(error, user){
-				res.render('./welcome', {
-					user: user
-				});
+				res.redirect('/users/' + user._id);
 			});
 		});
 	});
