@@ -25,7 +25,8 @@
 		<div class="row">
 			<div class="col-xs-6 col-md-4"></div>
   			<div class="col-xs-6 col-md-4">
-  				<form id="sign-up-form" action="/users" method="POST">
+  				<!-- enctype="multipart/form-data" importance for upload file -->
+  				<form id="sign-up-form" action="/users" method="POST" enctype="multipart/form-data">
   					<div class="form-group">
 					    <input type="text" class="form-control" name="name" id="password" placeholder="Your name">
 					</div>

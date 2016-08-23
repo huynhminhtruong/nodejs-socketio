@@ -10,7 +10,7 @@ module.exports = function(app, io){
 	});
 
 	app.get('/users', function(req,res){
-		User.find({}).exec(function(error, users){
+		User.find({}).populate('avatar').exec(function(error, users){
 			if(error){
 				console.log('Get error: ' + error);
 			}
@@ -27,7 +27,7 @@ module.exports = function(app, io){
 			file = 'data:image/png;base64,' 
 			+ fs.readFileSync(req.file.path).toString('base64'), 
 		user = new User();
-		
+
 		user.name = name;
 		user.email = email;
 		user.password = password;
