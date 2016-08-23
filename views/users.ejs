@@ -26,19 +26,22 @@
 			<div class="col-xs-6 col-md-4"></div>
   			<div class="col-xs-6 col-md-4">
   				<form id="sign-up-form" action="/users" method="POST">
-  					<div class="form-group">
-					    <input type="text" class="form-control" name="name" id="password" placeholder="Your name">
-					</div>
-					<div class="form-group">
-					    <input type="email" class="form-control" name="email" id="email" placeholder="Your email">
-					</div>
-					<div class="form-group">
-					    <input type="password" class="form-control" name="password" id="password" placeholder="Your password">
-					</div>
-					<div class="form-group">
-					    <input type="file" name="file" id="image">
-					</div>
-					<button type="submit" class="btn btn-default">Sign Up</button>
+  					<table class="table table-hover">
+  						<tr>
+  							<th>Avatar</th>
+  							<th>Name</th>
+  							<th>Email</th>
+  							<th>Messages</th>
+  						</tr>
+  						<% for(var i = 0; i < users.length; i++) {%>
+  						<tr>
+  							<td><img src="<%= users[i].avatar %>" class="user-avatar"></td>
+  							<td><%= users[i].name %></td>
+  							<td><%= users[i].email %></td>
+  							<td>Coming soon</td>
+  						</tr>
+  						<% } %>
+  					</table>
 				</form>
   			</div>
   			<div class="col-xs-6 col-md-4"></div>

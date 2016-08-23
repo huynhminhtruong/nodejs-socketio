@@ -1,11 +1,13 @@
 var express = require('express'), 
-	fs = require('fs'), 
 	mongoose = require('mongoose'), 
-	bodyParser = require('body-parser');
+	bodyParser = require('body-parser'), 
+	multer = require('multer'), 
+	uploads = multer({dest: 'public/uploads'}), 
+	path = require('path');
 
 module.exports = function(app, io){
 	mongoose.connect('mongodb://localhost/socketio');
-
+	
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({extended: false}));
 
@@ -13,5 +15,5 @@ module.exports = function(app, io){
 	app.engine('ejs', require('ejs').renderFile);
 	app.set('views', __dirname + '/views');
 
-	app.use(express.static(__dirname + '/public'));
+	app.use(express.static(path.join(__dirname, '/public')));
 };
