@@ -173,7 +173,11 @@ body {
 	height: 150px;
 	border-radius: 50%;
 }
-
+.user-avatar {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+}
 #yourName {
 	float:left;
 	padding-left:10px;

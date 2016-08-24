@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	<link type="text/css" rel="stylesheet" href="../public/css/stylesheet.css" />
+	<link type="text/css" rel="stylesheet" href="css/stylesheet.css" />
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans Condensed:300italic,300,700" rel="stylesheet" type="text/css">
 
 </head>
@@ -22,18 +22,23 @@
 	</header>
 
 	<section class="homesession">
-		<div class="row" style="padding-top: 100px;">
+		<div class="row">
 			<div class="col-xs-6 col-md-4"></div>
   			<div class="col-xs-6 col-md-4">
-  				<% if(user) { %>
-            <h2>Welcome to my site, <%= user.name %><img src="<%= user.avatar.image %>" class="user-avatar" style="width: 150px; height: 150px; border-radius: 50%;"/></h2>
-            <p>Your information: </p>
-            <p>
-              <label>Name: </label><%= user.name %>
-              <br />
-              <label>Email: </label><%= user.email %>
-            </p>
-  				<% } %>
+  				<form id="sign-up-form" action="/users" method="POST">
+  					<table class="table table-hover">
+  						<tr>
+  							<th>Logo</th>
+  							<th>Name</th>
+  						</tr>
+  						<% for(var i = 0; i < images.length; i++) {%>
+  						<tr>
+  							<td><img src="<%= images[i].image %>" class="user-avatar"></td>
+  							<td><%= images[i].name %></td>
+  						</tr>
+  						<% } %>
+  					</table>
+				</form>
   			</div>
   			<div class="col-xs-6 col-md-4"></div>
 		</div>
