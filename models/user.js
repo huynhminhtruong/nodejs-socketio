@@ -22,5 +22,9 @@ module.exports = mongoose.model('User', new Schema({
 	avatar: {
 		type: Schema.Types.ObjectId,
 		ref: 'Image'
+	},
+	role: {
+		type: Number,
+		'default': 0
 	}
 }));

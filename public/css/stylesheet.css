@@ -175,6 +175,7 @@ body {
 }
 .user-avatar {
 	width: 150px;
+	cursor: pointer;
 	height: 150px;
 	border-radius: 50%;
 }
