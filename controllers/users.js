@@ -9,6 +9,14 @@ module.exports = function(app, io){
 		res.render('./home');
 	});
 
+	app.get('/about', function(req,res){
+		Image.find({}).exec(function(error, images){
+			res.render('./about', {
+				images: images
+			});
+		});
+	});
+
 	app.get('/users', function(req,res){
 		User.find({}).populate('avatar').exec(function(error, users){
 			if(error){
@@ -22,11 +30,10 @@ module.exports = function(app, io){
 
 	app.get('/users/:id', function(req,res){
 		var mongoose = require('mongoose');
-		User.find({_id: req.params.id})
-		.populate('avatar').exec(function(error,data){
+		User.findById({_id: req.params.id})
+		.populate('avatar').exec(function(error,user){
 			res.render('./welcome', {
-				user: data,
-				name: data.name
+				user: user
 			});
 		});
 	});
