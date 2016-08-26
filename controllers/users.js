@@ -5,7 +5,7 @@ module.exports = function(app, io){
 		multer = require('multer'), 
 		uploads = multer({dest: './public/uploads'}).single('file');
 
-	app.get('/home', function(req,res){
+	app.get('/', function(req,res){
 		Image.find({}).exec(function(error, images){
 			res.render('./home', {
 				images: images
