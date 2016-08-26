@@ -6,12 +6,8 @@ module.exports = function(app, io){
 		uploads = multer({dest: './public/uploads'}).single('file');
 
 	app.get('/home', function(req,res){
-		res.render('./home');
-	});
-
-	app.get('/about', function(req,res){
 		Image.find({}).exec(function(error, images){
-			res.render('./about', {
+			res.render('./home', {
 				images: images
 			});
 		});

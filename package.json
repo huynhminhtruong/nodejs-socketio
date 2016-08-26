@@ -15,14 +15,18 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "compression": "^1.6.2",
     "ejs": "^1.0.0",
     "express": "^4.8.2",
+    "finalhandler": "^0.5.0",
     "gravatar": "~1.0.6",
     "gridfs-stream": "^1.1.1",
     "mongoose": "^4.5.9",
     "multer": "^1.2.0",
     "nodemailer": "^2.5.0",
     "path": "^0.12.7",
-    "socket.io": "1.0.6"
+    "router": "^1.1.4",
+    "socket.io": "1.0.6",
+    "twilio": "^2.9.2"
   }
 }
