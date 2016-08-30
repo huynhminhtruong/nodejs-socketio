@@ -9,10 +9,8 @@ module.exports = mongoose.model('User', new Schema({
 		type: String,
 		trim: true
 	},
-	password: {
-		type: String,
-		trim: true
-	},
+	passwordSalt: String,
+	passwordHash: String,
 	skills: [
 		{
 			type: String,
@@ -20,8 +18,8 @@ module.exports = mongoose.model('User', new Schema({
 		}
 	],
 	avatar: {
-		type: Schema.Types.ObjectId,
-		ref: 'Image'
+		type: String,
+		trim: true
 	},
 	role: {
 		type: Number,
