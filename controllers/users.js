@@ -13,8 +13,9 @@ module.exports = function(app, io){
 		});
 	});
 
-	app.get('/users', function(req,res){
-		User.find({}).populate('avatar').exec(function(error, users){
+	app.route('/users')
+	.get(function(req,res){
+		User.find({}).exec(function(error, users){
 			if(error){
 				console.log('Get error: ' + error);
 			}
@@ -22,15 +23,47 @@ module.exports = function(app, io){
 				users: users
 			});
 		});
+	}).post(uploads, function(req,res){
+		var name = req.body.name, 
+			email = req.body.email,
+			password = req.body.password, 
+			file = 'data:image/png;base64,' 
+			+ fs.readFileSync(req.file.path).toString('base64'), 
+			user = new User();
+
+		user.name = name;
+		user.email = email;
+		user.generatePassword(password);
+		user.avatar = file;
+
+		user.save(function(error, user){
+			res.redirect('/users/' + user._id);
+		});
 	});
 
 	app.get('/users/:id', function(req,res){
 		var mongoose = require('mongoose');
-		User.findById({_id: req.params.id})
-		.populate('avatar').exec(function(error,user){
+		User.findById({_id: req.params.id}).exec(function(error,user){
 			res.render('./welcome', {
 				user: user
 			});
+		});
+	});
+
+	app.post('/signin', function(req,res){
+		var email = req.body.email;
+		var password = req.body.password;
+
+		User.findOne({email: email}).exec(function(error, user){
+			if (error) {
+				console.log(error);
+			}
+
+			if(user.validPassword(password)){
+				res.redirect('/users/' + user._id);
+			}
+
+			res.redirect('/');
 		});
 	});
 
@@ -42,52 +75,14 @@ module.exports = function(app, io){
 		});
 	});
 
-	app.post('/users', uploads, function(req,res){
-		var name = req.body.name, 
-			email = req.body.email,
-			password = req.body.password, 
-			file = 'data:image/png;base64,' 
-			+ fs.readFileSync(req.file.path).toString('base64'), 
-			user = new User(), crypto = require('crypto');
-
-		var randomString = function(length){
-			return crypto.randomBytes(Math.ceil(length/2)).toString('base64').slice(0, length);
-		}
-
-		var sha512 = function(password, salt){
-			var hash = crypto.createHmac('sha512', salt);
-			hash.update(password);
-			var value = hash.digest('base64');
-
-			return {
-				salt: salt,
-				hash: value
-			}
-		}
-
-		var salt = randomString(16);
-		var hash = sha512(password, salt).hash;
-
-		user.name = name;
-		user.email = email;
-		user.password = password;
-		user.passwordSalt = salt;
-		user.passwordHash = hash;
-
-		user.save(function(error, user){
-			res.redirect('/users/' + user._id);
-		});
-	});
-
-	app.get('/images', function(req,res){
+	app.route('/images')
+	.get(function(req,res){
 		Image.find({}, function(error, images){
 			res.render('./images', {
 				images: images
 			});
 		});
-	});
-
-	app.post('/images', uploads, function(req,res,next){
+	}).post(uploads, function(req,res,next){
 		var image = new Image();
 		image.name = req.body.name;
 		image.image = 'data:image/png;base64,' 
@@ -100,7 +95,10 @@ module.exports = function(app, io){
 		});
 	});
 
-	app.get('/emails', function(req,res){
+	app.route('/emails')
+	.get(function(req,res){
 		res.render('./email', {});
+	}).post(function(req,res){
+		
 	});
 }
