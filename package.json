@@ -1,7 +1,7 @@
   {
-  "name": "NodeChatSystem",
+  "name": "TruongProfile",
   "version": "0.0.1",
-  "description": "Realtime chat system for Tutorialzine.com",
+  "description": "Find out how NodeJS working",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -12,7 +12,7 @@
     "chat",
     "system"
   ],
-  "author": "Nikolay Anastasov",
+  "author": "TruongHM",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.15.2",
