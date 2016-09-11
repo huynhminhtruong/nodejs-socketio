@@ -1,5 +1,5 @@
 module.exports = function(app, io){
-	var User = require('../models/user'), 
+	const User = require('../models/user'), 
 		Image = require('../models/image'), 
 		fs = require('fs'), 
 		multer = require('multer'), 
@@ -25,7 +25,7 @@ module.exports = function(app, io){
 	});
 
 	app.get('/users/:id', function(req,res){
-		var mongoose = require('mongoose');
+		const mongoose = require('mongoose');
 		User.findById({_id: req.params.id})
 		.populate('avatar').exec(function(error,user){
 			res.render('./welcome', {
@@ -43,21 +43,21 @@ module.exports = function(app, io){
 	});
 
 	app.post('/users', uploads, function(req,res){
-		var name = req.body.name, 
+		const name = req.body.name, 
 			email = req.body.email,
 			password = req.body.password, 
 			file = 'data:image/png;base64,' 
 			+ fs.readFileSync(req.file.path).toString('base64'), 
 			user = new User(), crypto = require('crypto');
 
-		var randomString = function(length){
+		const randomString = function(length){
 			return crypto.randomBytes(Math.ceil(length/2)).toString('base64').slice(0, length);
 		}
 
-		var sha512 = function(password, salt){
-			var hash = crypto.createHmac('sha512', salt);
+		const sha512 = function(password, salt){
+			const hash = crypto.createHmac('sha512', salt);
 			hash.update(password);
-			var value = hash.digest('base64');
+			const value = hash.digest('base64');
 
 			return {
 				salt: salt,
@@ -65,8 +65,8 @@ module.exports = function(app, io){
 			}
 		}
 
-		var salt = randomString(16);
-		var hash = sha512(password, salt).hash;
+		const salt = randomString(16);
+		const hash = sha512(password, salt).hash;
 
 		user.name = name;
 		user.email = email;
@@ -88,7 +88,7 @@ module.exports = function(app, io){
 	});
 
 	app.post('/images', uploads, function(req,res,next){
-		var image = new Image();
+		const image = new Image();
 		image.name = req.body.name;
 		image.image = 'data:image/png;base64,' 
 		+ fs.readFileSync(req.file.path).toString('base64');
