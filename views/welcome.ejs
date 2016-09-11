@@ -26,7 +26,7 @@
 			<div class="col-xs-6 col-md-4"></div>
   			<div class="col-xs-6 col-md-4">
   				<% if(user) { %>
-            <h2>Welcome to my site, <%= user.name %><img src="<%= user.avatar.image %>" class="user-avatar" style="width: 150px; height: 150px; border-radius: 50%;"/></h2>
+            <h2>Welcome to my site, <%= user.name %><img src="<%= user.avatar %>" class="user-avatar" style="width: 150px; height: 150px; border-radius: 50%;"/></h2>
             <p>Your information: </p>
             <p>
               <label>Name: </label><%= user.name %>
