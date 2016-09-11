@@ -1,7 +1,7 @@
 {
-  "name": "TruongProfile",
+  "name": "NodeChatSystem",
   "version": "0.0.1",
-  "description": "Find out how NodeJS working",
+  "description": "NodeJS Example",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -26,6 +26,7 @@
     "finalhandler": "^0.5.0",
     "gravatar": "~1.0.6",
     "gridfs-stream": "^1.1.1",
+    "handlebars": "^4.0.5",
     "mongoose": "^4.5.9",
     "multer": "^1.2.0",
     "nodemailer": "^2.5.0",

@@ -1,4 +1,4 @@
-var express = require('express'),
+const express = require('express'),
 	app = express(), 
 	port = process.env.PORT || 9000, 
 	io = require('socket.io').listen(app.listen(port));

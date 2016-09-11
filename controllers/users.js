@@ -1,5 +1,5 @@
 module.exports = function(app, io){
-	var User = require('../models/user'), 
+	const User = require('../models/user'), 
 		Image = require('../models/image'), 
 		fs = require('fs'), 
 		multer = require('multer'), 
@@ -53,12 +53,10 @@ module.exports = function(app, io){
 	app.post('/signin', function(req,res){
 		var email = req.body.email;
 		var password = req.body.password;
-
 		User.findOne({email: email}).exec(function(error, user){
 			if (error) {
 				console.log(error);
 			}
-
 			if(user.validPassword(password)){
 				res.redirect('/users/' + user._id);
 			}
