@@ -18,11 +18,13 @@
 <body>
 
 	<header class="homebanner">
-		<% include /partials/header %>
+		{{> header}}
 	</header>
 
 	<section class="homesession">
-		<div class="about"><% include /partials/about %></div>
+		<container>
+			{{{body}}}
+		</container>
 	</section>
 
 </body>
