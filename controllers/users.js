@@ -3,20 +3,59 @@ module.exports = function(app, io){
 		Image = require('../models/image'), 
 		fs = require('fs'), 
 		multer = require('multer'), 
-		uploads = multer({dest: './public/uploads'}).single('file');
+		uploads = multer({dest: './public/uploads'}).single('file'), 
+		jwt = require('jsonwebtoken')
 
-	app.get('/', (req,res) => {
-		Image.find({}).exec(function(error, images){
-			res.render('./login', {
-				images: images,
-				method: '/signin',
-				title: 'Please sign in',
-				email: 'Email address',
-				password: 'Passwprd',
-				action: 'Sign in'
-			});
-		});
+	function auth(req,res,next){
+		const token = req.session.authorization
+
+		if (token) {
+			jwt.verify(token, app.get('supersecret'), function(error, decode){
+				req.user = decode.user
+				next()
+			})
+		} else {
+			res.json({
+				success: true, 
+				message: 'Please login first'
+			})
+		}
+	}
+
+	function getToken(req,res,next){
+		next()
+	}
+
+	app.get('/', auth, (req,res) => {
+		res.redirect('/user')
 	});
+
+	app.route('/login')
+	.get((req,res) => {
+		res.render('./login', {
+			method: '/login',
+			title: 'Please sign in',
+			email: 'Email address',
+			password: 'password',
+			action: 'Sign in'
+		});
+	}).post(uploads, (req,res) => {
+		User.findOne({email: req.body.email}).exec(function(error, user){
+			if (error) {
+				next(error)
+			}
+			if(user.validPassword(req.body.password)){
+				var token = jwt.sign({
+					user: user
+				}, app.get('supersecret'))
+
+				req.session.authorization = token
+				res.status(200).json({token})
+				// res.redirect('/user')
+			}
+			res.redirect('/')
+		})
+	})
 
 	app.route('/users')
 	.get((req,res) => {
@@ -46,28 +85,10 @@ module.exports = function(app, io){
 		});
 	});
 
-	app.get('/users/:id', (req,res) => {
-		User.findById({_id: req.params.id}).exec(function(error,user){
-			res.render('./welcome', {
-				user: user
-			});
-		});
-	});
-
-	app.post('/signin', uploads, (req,res) => {
-		const email = req.body.email
-		const password = req.body.password
-
-		User.findOne({email: email}).exec(function(error, user){
-			if (error) {
-				console.log(error);
-			}
-			if(user.validPassword(password)){
-				res.redirect('/users/' + user._id);
-			}
-
-			res.redirect('/');
-		});
+	app.get('/user', auth, (req,res) => {
+		res.render('./welcome', {
+			user: req.user
+		})
 	});
 
 	app.get('/new', (req,res) => {

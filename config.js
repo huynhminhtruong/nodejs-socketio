@@ -1,4 +1,6 @@
 const express = require('express'), 
+	expressJWT = require('express-jwt'), 
+	jwt = require('jsonwebtoken'), 
 	mongoose = require('mongoose'), 
 	exphbs = require('express-handlebars'), 
 	session = require('express-session'), 
@@ -10,21 +12,32 @@ const express = require('express'),
 	multer = require('multer'), 
 	uploads = multer({dest: 'public/uploads'}), 
 	path = require('path'), 
-	cookieParser = require('cookie-parser')
+	cookieParser = require('cookie-parser'), 
+	authen = require('./authenticate'), 
+	request = require('request')
 
 module.exports = function(app, io){
 	mongoose.connect('mongodb://localhost/socketio')
 
+	app.set('supersecret', authen.secret)
+
 	app.use(cookieParser())
 	app.use(bodyParser.json())
-	app.use(bodyParser.urlencoded({extended: false}))
+	app.use(bodyParser.urlencoded({extended: true}))
+	app.use(expressJWT({secret: authen.secret}).unless({ path: ['/', '/login']}))
 
-	app.use(methodOverride('X-HTTP-Method-Override'))
-	app.use(session({secret: 'supernova', saveUninitialized: true, resave: true}))
+	app.use('/*', function(req, res, next) {
+	    res.setHeader('Access-Control-Allow-Origin', '*')
+	    res.setHeader('Access-Control-Allow-Methods', 'GET, POST')
+	    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization')
+	    next()
+	})
 
-	app.use(passport.initialize())
-	app.use(passport.session())
-	app.use(flash())
+	app.set('trust proxy', 1)
+
+	app.use(session({
+	  secret: authen.secret
+	}))
 
 	app.engine('.hbs', exphbs({
 		defaultLayout: 'main', 
