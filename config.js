@@ -1,4 +1,4 @@
-const express = require('express'), 
+var express = require('express'), 
 	expressJWT = require('express-jwt'), 
 	jwt = require('jsonwebtoken'), 
 	mongoose = require('mongoose'), 
@@ -14,30 +14,46 @@ const express = require('express'),
 	path = require('path'), 
 	cookieParser = require('cookie-parser'), 
 	authen = require('./authenticate'), 
-	request = require('request')
+	request = require('request'), 
+	config = require('./config/development')
 
 module.exports = function(app, io){
-	mongoose.connect('mongodb://localhost/socketio')
+	mongoose.connect(config.database)
 
-	app.set('supersecret', authen.secret)
+	app.set('supersecret', config.secret)
 
 	app.use(cookieParser())
 	app.use(bodyParser.json())
-	app.use(bodyParser.urlencoded({extended: true}))
-	app.use(expressJWT({secret: authen.secret}).unless({ path: ['/', '/login']}))
+	app.use(bodyParser.urlencoded({extended: false}))
+	app.use(session({ secret: authen.secret }))
 
-	app.use('/*', function(req, res, next) {
-	    res.setHeader('Access-Control-Allow-Origin', '*')
-	    res.setHeader('Access-Control-Allow-Methods', 'GET, POST')
-	    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization')
+	app.use(expressJWT({ 
+		secret: authen.secret, 
+		credentialsRequired: false, 
+		getToken: function getAccessToken(req) {
+			if (req.session.authorization || req.query.access_token) {
+				return req.session.authorization || req.query.access_token
+			}
+
+			return null
+		}
+	}).unless({ path: ['/', '/login']}))
+
+	app.use(function(req, res, next) {
+	    res.header('Access-Control-Allow-Origin', '*')
+	    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS')
+	    res.header('Access-Control-Allow-Headers', 'Authorization, Content-Length, X-Requested-With')
+	    if (req.session.authorization) {
+	    	res.header('Authorization', 'Bearer ' + req.session.authorization)
+	    }
 	    next()
 	})
 
-	app.set('trust proxy', 1)
+	app.use(function(req, res, next) {
+		next()
+	})
 
-	app.use(session({
-	  secret: authen.secret
-	}))
+	app.set('trust proxy', 1)
 
 	app.engine('.hbs', exphbs({
 		defaultLayout: 'main', 
