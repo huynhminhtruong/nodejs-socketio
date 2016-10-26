@@ -15,6 +15,12 @@ module.exports = function(app, io){
 	    res.redirect('/user')
 	})
 
+	app.route('/logout').get((req,res) => {
+		
+	}).post((req,res) => {
+		
+	})
+
 	app.route('/login')
 	.get((req,res) => {
 		if (req.headers.authorization || req.session.authorization) {
