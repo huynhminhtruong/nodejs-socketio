@@ -13,12 +13,6 @@ var UserSchema = new Schema({
 	},
 	passwordSalt: String,
 	passwordHash: String,
-	skills: [
-		{
-			type: String,
-			trim: true
-		}
-	],
 	avatar: {
 		type: String,
 		trim: true

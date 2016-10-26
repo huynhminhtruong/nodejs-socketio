@@ -4,6 +4,12 @@ const User = require('../models/user'),
 		uploads = multer({dest: './public/uploads'}).single('file'), 
 		authentication = require('../config/authentication')
 
+function storeAccessToken(req, res, user) {
+	req.session.authorization = authentication.generateToken(req, res, user)
+
+	return authentication.generateToken(req, res, user)
+}
+
 module.exports = function(app, io){
 	app.get('/', authentication.verify, (req, res) => {
 	    res.redirect('/user')
@@ -20,7 +26,8 @@ module.exports = function(app, io){
 			title: 'Please sign in',
 			email: 'Email address',
 			password: 'password',
-			action: 'Sign in'
+			action: 'Sign in',
+			isRegister: false
 		})
 	}).post(uploads, (req, res) => {
 		User.findOne({email: req.body.email}).exec(function(error, user){
@@ -28,9 +35,7 @@ module.exports = function(app, io){
 				next(error)
 			}
 			if (user.validPassword(req.body.password)) {
-				var token = authentication.generateToken(req, res, user)
-				req.session.authorization = token
-				res.redirect('/user?access_token=' + token)
+				res.redirect('/user?access_token=' + storeAccessToken(req, res, user))
 			}
 		})
 	})
@@ -46,9 +51,11 @@ module.exports = function(app, io){
 		res.render('./register', {
 			method: '/user/new',
 			title: 'Register New Account',
+			name: 'Your name', 
 			email: 'Your email',
 			password: 'Your password',
-			action: 'Register'
+			action: 'Register',
+			isRegister: true
 		})
 	}).post(uploads, (req, res) => {
 		const name = req.body.name, email = req.body.email, 
@@ -62,8 +69,7 @@ module.exports = function(app, io){
 		}
 
 		user.save(function (error, user) {
-			res.status(200).json(user)
-			// res.redirect('/user' + user._id)
+			res.redirect('/user?access_token=' + storeAccessToken(req, res, user))
 		})
 	})
 
