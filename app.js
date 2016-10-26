@@ -5,6 +5,7 @@ const express = require('express'),
 
 require('./config')(app, io);
 require('./controllers/users')(app, io);
+require('./controllers/images')(app, io);
 require('./talk')(app, io);
 
 console.log('Server is running on ' + port);

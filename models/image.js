@@ -13,7 +13,7 @@ module.exports = mongoose.model('Image', new Schema({
 		type: String
 	}, 
 	vote: {
-		type: Number
+		type: Number,
 		'default': 0
 	}, 
 	comments: [
@@ -23,9 +23,11 @@ module.exports = mongoose.model('Image', new Schema({
 				ref: 'User'
 			}, 
 			comments: [
-				description: {
-					type: String,
-					trim: true
+				{
+					description: {
+						type: String,
+						trim: true
+					}
 				}
 			]
 		}
