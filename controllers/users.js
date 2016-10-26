@@ -64,9 +64,12 @@ module.exports = function(app, io){
 		user.name = name
 		user.email = email
 		user.generatePassword(password)
+
 		if (req.file && req.file.path) {
 			user.avatar = 'data:image/png;base64,' + fs.readFileSync(req.file.path).toString('base64')
 		}
+
+		fs.unlink(req.file.path)
 
 		user.save(function (error, user) {
 			res.redirect('/user?access_token=' + storeAccessToken(req, res, user))
