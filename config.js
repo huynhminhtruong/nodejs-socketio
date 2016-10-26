@@ -1,4 +1,4 @@
-var express = require('express'), 
+const express = require('express'), 
 	expressJWT = require('express-jwt'), 
 	jwt = require('jsonwebtoken'), 
 	mongoose = require('mongoose'), 
@@ -24,7 +24,7 @@ module.exports = function(app, io){
 
 	app.use(cookieParser())
 	app.use(bodyParser.json())
-	app.use(bodyParser.urlencoded({extended: false}))
+	app.use(bodyParser.urlencoded({ extended: true }))
 	app.use(session({ secret: authen.secret }))
 
 	app.use(expressJWT({ 

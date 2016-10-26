@@ -9,15 +9,16 @@ module.exports = function(app, io) {
 			})
 		})
 	}).post(uploads, (req,res,next) => {
-		const image = new Image();
-		image.name = req.body.name;
+		const image = new Image()
+
+		image.name = req.body.name
 		image.image = 'data:image/png;base64,' 
 		+ fs.readFileSync(req.file.path).toString('base64')
 
-		image.save(function(error, img){
+		image.save(function(error, img) {
 			// Remove file in uploads folder
-			fs.unlink(req.file.path);
-			res.redirect('images');
+			fs.unlink(req.file.path)
+			res.redirect('images')
 		})
 	})
 }
