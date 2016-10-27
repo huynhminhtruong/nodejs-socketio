@@ -5,14 +5,12 @@
     </div>
   <div class="col-md-3"></div>
 </div>
-{{#images}}
   <div class="row">
-    <div class="col-xs-6 col-md-4"></div>
+    {{#each images}}
     <div class="col-xs-6 col-md-4">
-      <label>{{name}}</label>
       <br /><br />
-      <img src={{image}} style="width: 70%; cursor: pointer;"/></div>
-    <div class="col-xs-6 col-md-4"></div>
+      <img src={{image}} style="width: 350px; height: 200px; cursor: pointer;"/>
+    </div>
+    {{/each}}
   </div>
   <br /><br />
-{{/images}}

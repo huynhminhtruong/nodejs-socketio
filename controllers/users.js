@@ -12,7 +12,7 @@ function storeAccessToken(req, res, user) {
 
 module.exports = function(app, io){
 	app.get('/', authentication.verify, (req, res) => {
-	    res.redirect('/user')
+	    res.redirect('/users/welcome?access_token=' + req.session.authentication)
 	})
 
 	app.route('/logout').get((req,res) => {
@@ -41,21 +41,29 @@ module.exports = function(app, io){
 				next(error)
 			}
 			if (user.validPassword(req.body.password)) {
-				res.redirect('/user?access_token=' + storeAccessToken(req, res, user))
+				res.redirect('/users/welcome?access_token=' + storeAccessToken(req, res, user))
 			}
 		})
 	})
 
-	app.get('/user', authentication.verify, (req, res) => {
-		res.render('./welcome', {
+	app.get('/users/welcome', authentication.verify, (req, res) => {
+		res.render('./user/welcome', {
 			user: req.user
 		})
 	})
 
-	app.route('/user/new')
+	app.get('/users/profile', authentication.verify, (req, res) => {
+		res.render('./user/profile', {
+			user: req.user
+		})
+	}).post((req, res) => {
+
+	})
+
+	app.route('/users/new')
 	.get((req, res) => {
 		res.render('./register', {
-			method: '/user/new',
+			method: '/users/new',
 			title: 'Register New Account',
 			name: 'Your name', 
 			email: 'Your email',
@@ -78,7 +86,7 @@ module.exports = function(app, io){
 		fs.unlink(req.file.path)
 
 		user.save(function (error, user) {
-			res.redirect('/user?access_token=' + storeAccessToken(req, res, user))
+			res.redirect('/users/welcome?access_token=' + storeAccessToken(req, res, user))
 		})
 	})
 
@@ -88,7 +96,7 @@ module.exports = function(app, io){
 			if (error) {
 				console.log('Get error: ' + error)
 			}
-			res.render('./users', {
+			res.render('./user/users', {
 				users: users
 			})
 		})
