@@ -97,7 +97,8 @@ module.exports = function(app, io){
 				console.log('Get error: ' + error)
 			}
 			res.render('./user/users', {
-				users: users
+				users: users,
+				isAdmin: true
 			})
 		})
 	})
