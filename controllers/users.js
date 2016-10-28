@@ -100,14 +100,14 @@ module.exports = function(app, io){
 		var types = [
 			{
 				icon: 'fa fa-fw fa-info-circle',
-				type: 'Information',
+				type: 'information',
 				isActive: 'active'
 			}, {
 				icon: 'fa fa-fw fa-list',
-				type: 'Users'
+				type: 'users'
 			}, {
 				icon: 'fa fa-fw fa-table',
-				type: 'Post'
+				type: 'post'
 			}
 		]
 
@@ -115,7 +115,7 @@ module.exports = function(app, io){
 			types: types
 		})
 	}).post((req, res) => {
-
+		
 	})
 
 	app.route('/users')
