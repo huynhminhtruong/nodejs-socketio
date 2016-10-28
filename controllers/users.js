@@ -11,8 +11,12 @@ function storeAccessToken(req, res, user) {
 }
 
 module.exports = function(app, io){
-	app.get('/', authentication.verify, (req, res) => {
-	    res.redirect('/users/welcome?access_token=' + req.session.authentication)
+	// app.get('/', authentication.verify, (req, res) => {
+	//     res.redirect('/users/welcome?access_token=' + req.session.authentication)
+	// })
+
+	app.get('/', (req, res) => {
+		res.render('./about/about', {})
 	})
 
 	app.route('/logout').get((req,res) => {
