@@ -97,8 +97,22 @@ module.exports = function(app, io){
 	app.route('/users/dashboard').get(authentication.verify, (req, res) => {
 		res.addScript('/js/dashboard.js')
 
+		var types = [
+			{
+				icon: 'fa fa-fw fa-info-circle',
+				type: 'Information',
+				isActive: 'active'
+			}, {
+				icon: 'fa fa-fw fa-list',
+				type: 'Users'
+			}, {
+				icon: 'fa fa-fw fa-table',
+				type: 'Post'
+			}
+		]
+
 		res.render('./user/dashboard', {
-			
+			types: types
 		})
 	}).post((req, res) => {
 

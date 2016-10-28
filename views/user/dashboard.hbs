@@ -1,13 +1,9 @@
 <div class="collapse navbar-inverse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav side-nav">
-        <li class="active">
-            <a href="#"><i class="fa fa-fw fa-info-circle"></i> Information</a>
-        </li>
-        <li>
-            <a href="#"><i class="fa fa-fw fa-list"></i> Users</a>
-        </li>
-        <li>
-            <a href="#"><i class="fa fa-fw fa-table"></i> Post</a>
-        </li>
+        {{#types}}
+            <li class="{{isActive}}">
+                <a href="#"><i class="{{icon}}"></i> {{type}}</a>
+            </li>
+        {{/types}}
     </ul>
 </div>
