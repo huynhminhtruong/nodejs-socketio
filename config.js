@@ -50,6 +50,25 @@ module.exports = function(app, io){
 	})
 
 	app.use(function(req, res, next) {
+		res.locals.styles = []
+		res.locals.scripts = []
+
+		res.addStyle = function(url) {
+			res.locals.styles.push({
+				url: url
+			})
+		}
+
+		res.addScript = function(url) {
+			res.locals.scripts.push({
+				url: url
+			})
+		}
+
+		res.addStyle('/css/main.css')
+		res.addStyle('/css/sb-admin.css')
+		res.addStyle('/font-awesome/css/font-awesome.min.css')
+
 		next()
 	})
 
@@ -59,7 +78,11 @@ module.exports = function(app, io){
 		defaultLayout: 'main', 
 		extname: '.hbs', 
 		layoutsDir: path.join(__dirname, 'views/layouts'), 
-		partialsDir: path.join(__dirname, 'views/partials')
+		partialsDir: path.join(__dirname, 'views/partials'), 
+		aboutDir: path.join(__dirname, 'views/about'), 
+		chatDir: path.join(__dirname, 'views/chat'), 
+		imageDir: path.join(__dirname, 'views/image'), 
+		userDir: path.join(__dirname, 'views/user')
 	}))
 
 	app.set('view engine', '.hbs')

@@ -66,7 +66,7 @@ module.exports = function(app, io){
 
 	app.route('/users/new')
 	.get((req, res) => {
-		res.render('./register', {
+		res.render('./user/register', {
 			method: '/users/new',
 			title: 'Register New Account',
 			name: 'Your name', 
@@ -92,6 +92,16 @@ module.exports = function(app, io){
 		user.save(function (error, user) {
 			res.redirect('/users/welcome?access_token=' + storeAccessToken(req, res, user))
 		})
+	})
+
+	app.route('/users/dashboard').get(authentication.verify, (req, res) => {
+		res.addScript('/js/dashboard.js')
+
+		res.render('./user/dashboard', {
+			
+		})
+	}).post((req, res) => {
+
 	})
 
 	app.route('/users')
