@@ -11,6 +11,8 @@ function render(res, template, object) {
 module.exports = function(app, io) {
 	app.route('/images')
 	.get(authentication.verify, (req,res) => {
+		res.addScript('/js/image.js')
+		
 		Image.find({}, function(error, images){
 			res.render('./image/images', {
 				images: images

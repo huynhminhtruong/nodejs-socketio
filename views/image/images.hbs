@@ -6,17 +6,10 @@
         <a id="share-experience" class="btn btn-primary btn-xl">Share Your Experience</a>
       </div>
     </div>
-    <div class="row image-item">
+    <div id="images" class="row image-item">
     {{#each images}}
       <div class="col-md-4 col-sm-6 portfolio-item">
-        <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
-          <div class="portfolio-hover">
-            <div class="portfolio-hover-content">
-              <i class="fa fa-plus fa-3x"></i>
-            </div>
-          </div>
-          <img src="{{image}}" class="img-responsive grid-images" alt="">
-        </a>
+        <img src="{{image}}" class="img-responsive grid-images" alt="">
       </div>
     {{/each}}
     </div>

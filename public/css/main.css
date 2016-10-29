@@ -11,6 +11,7 @@
 .grid-images {
   height: 250px;
   width: 350px;
+  cursor: pointer;
 }
 
 .btn {
