@@ -15,7 +15,8 @@ module.exports = function(app, io) {
 		
 		Image.find({}, function(error, images){
 			res.render('./image/images', {
-				images: images
+				images: images,
+				imageActive: true
 			})
 		})
 	})

@@ -69,6 +69,7 @@ module.exports = function(app, io){
 		res.addStyle('/css/sb-admin.css')
 		res.addStyle('/font-awesome/css/font-awesome.min.css')
 		res.addScript('/js/bootbox.min.js')
+		res.addScript('/socket.io/socket.io.js')
 
 		next()
 	})

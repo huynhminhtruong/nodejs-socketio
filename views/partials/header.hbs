@@ -1,19 +1,19 @@
 <nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container">
 	    <div class="navbar-header">
-	    	<a title="Home" class="navbar-brand" href="/">
+	    	<a title="Home" id="home" class="navbar-brand header-site" href="/" active="{{home}}">
 	    		<i class="glyphicon glyphicon-home"></i>
 	    	</a>
-	      	<a title="Contact" class="navbar-brand" href="/create">
+	      	<a title="Contact" id="contact" class="navbar-brand header-site" href="/chat" active="{{contactActive}}">
 	      		<i class="glyphicon glyphicon-comment"></i>
 	      	</a>
-	      	<a title="Send Mail" class="navbar-brand" href="/emails">
+	      	<a title="Send Mail" id="send-mail" class="navbar-brand header-site" href="/emails" active="{{mailActive}}">
 	      		<i class="glyphicon glyphicon-envelope"></i>
 	      	</a>
-	      	<a title="List Images" class="navbar-brand" href="/images">
+	      	<a title="List Images" id="list-images" class="navbar-brand header-site" href="/images" active="{{imageActive}}">
 	      		<i class="glyphicon glyphicon-th"></i>
 	      	</a>
-	      	<a title="List Users" class="navbar-brand" href="/users">
+	      	<a title="List Users" id="list-users" class="navbar-brand header-site" href="/users" active="{{userActive}}">
 	      		<i class="glyphicon glyphicon-th-list"></i>
 	      	</a>
 	    </div>

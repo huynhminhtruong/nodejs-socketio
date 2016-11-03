@@ -1,0 +1,29 @@
+<ul id="messages-chatting" style="list-style-type: none;"></ul>
+
+<form id="chatting" class="navbar-form navbar-left" role="search" style="width:100%;">
+	<input id="message" autocomplete="off" style="width:70%;border:none;" placeholder="Enter your text" />
+	<button id="send" user="{{name}}" value="{{id}}">{{action}}</button>
+	<script>
+		var chat = io('/chat');
+		
+		$('form#chatting').submit(function(){
+			chat.emit('chat messages', {name: $('#send').attr('user'), message: $('#message').val(), id: $('#send').attr('value')});
+			$('#message').val('');
+			return false;
+		});
+
+		chat.on('start chatting', function(data){
+			$('#messages-chatting').append($('<li>').text('Admin: ' + data.message));
+		});
+
+		chat.on('server messages', function(data){
+			var li = document.createElement('LI');
+			var image = document.createElement('img');
+
+			li.appendChild(image);
+
+			$('#messages-chatting').append(li);
+			$('#messages-chatting').append($('<li>').attr('id',data.id).text(data.user + ': ' + data.message));
+		});
+	</script>
+</form>

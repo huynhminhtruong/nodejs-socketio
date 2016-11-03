@@ -94,30 +94,6 @@ module.exports = function(app, io){
 		})
 	})
 
-	app.route('/users/dashboard').get(authentication.verify, (req, res) => {
-		res.addScript('/js/dashboard.js')
-
-		var types = [
-			{
-				icon: 'fa fa-fw fa-info-circle',
-				type: 'information',
-				isActive: 'active'
-			}, {
-				icon: 'fa fa-fw fa-list',
-				type: 'users'
-			}, {
-				icon: 'fa fa-fw fa-table',
-				type: 'post'
-			}
-		]
-
-		res.render('./user/dashboard', {
-			types: types
-		})
-	}).post((req, res) => {
-		
-	})
-
 	app.route('/users')
 	.get((req, res) => {
 		User.find({}).exec(function (error, users) {
@@ -126,7 +102,8 @@ module.exports = function(app, io){
 			}
 			res.render('./user/users', {
 				users: users,
-				isAdmin: true
+				isAdmin: true,
+				userActive: true
 			})
 		})
 	})
