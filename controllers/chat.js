@@ -14,7 +14,6 @@ module.exports = function(app, io){
 	var chat = io.of('/chat').on('connection', function(socket){
 		socket.emit('start chatting', {message: 'Welcome to my world'})
 		socket.on('chat messages', function(data) {
-			console.log(data)
 			chat.emit('server messages', {
 				user: data.name,
 				id: data.id,
