@@ -6,8 +6,9 @@ module.exports = function(app, io){
 			title: 'Tell the world',
 			action: 'Send',
 			contactActive: true,
+			id: req.user._id,
 			name: req.user.name,
-			id: req.user._id
+			image: req.user.avatar
 		})
 	})
 
@@ -17,7 +18,8 @@ module.exports = function(app, io){
 			chat.emit('server messages', {
 				user: data.name,
 				id: data.id,
-				message: data.message
+				message: data.message,
+				image: data.image
 			})
 		})
 	})
