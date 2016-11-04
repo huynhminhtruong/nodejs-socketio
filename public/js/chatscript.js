@@ -1,43 +1,35 @@
 $(function(){
-	function formSubmit() {
-
-	}
-
-	function startChatting() {
-		var socket = io();
+	var chat = io('/chat');
 		
-		$('form#chatting').submit(function(){
-			socket.emit('chat messages', {user: $('#send').attr('user'), message: $('#message').val(), id: $('#send').attr('value')});
-			$('#message').val('');
-			return false;
+	$('form#chatting').submit(function(){
+		chat.emit('chat messages', { 
+			name: document.getElementById('send').getAttribute('user'), 
+			message: document.getElementById('message').value, 
+			id: document.getElementById('send').value, 
+			image: document.getElementById('send').getAttribute('avatar')
 		});
 
-		socket.on('start chatting', function(data){
-			$('#messages-chatting').append($('<li>').text('Admin: ' + data.message));
-		});
+		$('#message').val('');
 
-		socket.on('server messages', function(data){
-			var li = document.createElement('LI');
-			var image = document.createElement('img');
+		return false;
+	});
 
-			li.appendChild(image);
+	chat.on('start chatting', function(data){
+		$('#messages-chatting').append($('<li>').text('Admin: ' + data.message));
+	});
 
-			$('#messages-chatting').append(li);
-			$('#messages-chatting').append($('<li>').attr('id',data.id).text(data.user + ': ' + data.message));
-		});
-	}
+	chat.on('server messages', function(data){
+		var li = document.createElement('LI');
+		var image = document.createElement('img');
+		var label = document.createElement('label');
 
-	function serverMessages() {
+		image.src = data.image;
+		image.className = 'avatar';
+		label.id = data.id;
 
-	}
+		li.appendChild(image);
+		li.appendChild(label);
 
-	function loadHeaderBackground() {
-		$('a.header-site').each(function(){
-			if($(this).attr('active') && $(this).attr('id') != 'home' && $(this).attr('id') != 'list-images') {
-				$('header').css({'background-position': 'none'});
-			}
-		});
-	}
-
-	loadHeaderBackground();
+		$('#messages-chatting').append(li);
+	});
 });
