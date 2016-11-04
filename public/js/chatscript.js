@@ -18,6 +18,10 @@ $(function(){
 		return li;
 	}
 
+	chat.on('connect', function(){
+		chat.emit('load', roomId);
+	});
+
 	chat.on('new connection', function(data){
 		var li = loadAvatar('Admin', '/img/golang.png', data, 'admin');
 
@@ -40,7 +44,7 @@ $(function(){
 	chat.on('server messages', function(data){
 		var li = loadAvatar(data.user, data.image, data, 'user');
 
-		alert('Server reply');
+		//alert('Server reply');
 
 		$('#messages-chatting').append(li);
 	});
