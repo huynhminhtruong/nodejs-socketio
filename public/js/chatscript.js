@@ -1,11 +1,34 @@
 $(function(){
 	var chat = io('/chat');
+	var roomId = Number(window.location.pathname.match(/\/chat\/(\d+)$/)[1]);
+
+	function loadAvatar(user, image, data, permission) {
+		var li = $(
+			'<li class="" role="' + permission + '">' 
+				+ '<div class="">' 
+				+ '<img class="avatar" />' + '<b></b></div>' 
+				+ '<p style="padding-left: 50px;"></p>' + '</li>'
+			);
+
+		li.find('img').attr({'src': image});
+		if(data.id) li.find('img').attr({'id': data.id});
+		li.find('b').text(user);
+		li.find('p').text(data.message);
+
+		return li;
+	}
+
+	chat.on('new connection', function(data){
+		var li = loadAvatar('Admin', '/img/golang.png', data, 'admin');
+
+		$('#messages-chatting').append(li);
+	});
 		
 	$('form#chatting').submit(function(){
 		chat.emit('chat messages', { 
 			name: document.getElementById('send').getAttribute('user'), 
 			message: document.getElementById('message').value, 
-			id: document.getElementById('send').value, 
+			roomId: roomId, 
 			image: document.getElementById('send').getAttribute('avatar')
 		});
 
@@ -14,21 +37,10 @@ $(function(){
 		return false;
 	});
 
-	chat.on('start chatting', function(data){
-		$('#messages-chatting').append($('<li>').text('Admin: ' + data.message));
-	});
-
 	chat.on('server messages', function(data){
-		var li = document.createElement('LI');
-		var image = document.createElement('img');
-		var label = document.createElement('label');
+		var li = loadAvatar(data.user, data.image, data, 'user');
 
-		image.src = data.image;
-		image.className = 'avatar';
-		label.id = data.id;
-
-		li.appendChild(image);
-		li.appendChild(label);
+		alert('Server reply');
 
 		$('#messages-chatting').append(li);
 	});

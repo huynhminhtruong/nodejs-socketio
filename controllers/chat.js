@@ -1,7 +1,13 @@
 const authentication = require('../config/authentication')
 
 module.exports = function(app, io){
-	app.get('/chat', authentication.verify, (req, res) => {
+	app.get('/create', authentication.verify, (req, res) => {
+		var room = Math.round((Math.random() * 1000000))
+
+		res.redirect('/chat/' + room)
+	})
+
+	app.get('/chat/:id', authentication.verify, (req, res) => {
 		res.render('./contact/chat', {
 			title: 'Tell the world',
 			action: 'Send',
@@ -13,14 +19,23 @@ module.exports = function(app, io){
 	})
 
 	var chat = io.of('/chat').on('connection', function(socket){
-		socket.emit('start chatting', {message: 'Welcome to my world'})
+		socket.emit('new connection', { 
+			id: socket.id, 
+			message: "Hi new user! Let's start chatting with someone" 
+		})
+
 		socket.on('chat messages', function(data) {
-			chat.emit('server messages', {
+			socket.broadcast.emit('server messages', {
 				user: data.name,
-				id: data.id,
 				message: data.message,
 				image: data.image
 			})
+			// chat.emit('server messages', {
+			// 	user: data.name,
+			// 	id: socket.id,
+			// 	message: data.message,
+			// 	image: data.image
+			// })
 		})
 	})
 }
