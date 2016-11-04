@@ -1,7 +1,14 @@
-<ul id="messages-chatting" style="list-style-type: none;"></ul>
+<div class="row">
+  <div class="col-md-8">
+  	<ul id="messages-chatting" style="list-style-type: none;"></ul>
 
-<form id="chatting" class="navbar-form navbar-left" role="search" style="width:100%;">
-	<input id="message" autocomplete="off" style="width:70%;border:none;" placeholder="Enter your text" />
-	<button id="send" user="{{name}}" value="{{id}}" avatar="{{image}}">{{action}}</button>
-	<script src="/js/chatscript.js"></script>
-</form>
+	<form id="chatting" class="navbar-form navbar-left" role="search" style="width:100%;">
+		<input id="message" autocomplete="off" style="width:70%;border:none;" placeholder="Enter your text" />
+		<button id="send" user="{{name}}" value="{{id}}" avatar="{{image}}">{{action}}</button>
+		<script src="/js/chatscript.js"></script>
+	</form>
+  </div>
+  <div class="col-md-4">
+  	{{> users}}
+  </div>
+</div>

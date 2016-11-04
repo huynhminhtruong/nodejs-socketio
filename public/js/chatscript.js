@@ -1,6 +1,6 @@
 $(function(){
 	var chat = io('/chat');
-	var roomId = Number(window.location.pathname.match(/\/chat\/(\d+)$/)[1]);
+	var roomId = window.location.pathname.substr(6);
 
 	function loadAvatar(user, image, data, permission) {
 		var li = $(
@@ -18,8 +18,8 @@ $(function(){
 		return li;
 	}
 
-	chat.on('connect', function(){
-		chat.emit('load', roomId);
+	$('tr.users-list').click(function(){
+		alert($(this).attr('id'));
 	});
 
 	chat.on('new connection', function(data){
@@ -27,13 +27,15 @@ $(function(){
 
 		$('#messages-chatting').append(li);
 	});
-		
+
+	chat.emit('login', roomId);
+
 	$('form#chatting').submit(function(){
-		chat.emit('chat messages', { 
+		chat.emit('chat messages', {
+			room: roomId, 
 			name: document.getElementById('send').getAttribute('user'), 
-			message: document.getElementById('message').value, 
-			roomId: roomId, 
-			image: document.getElementById('send').getAttribute('avatar')
+			image: document.getElementById('send').getAttribute('avatar'), 
+			message: document.getElementById('message').value
 		});
 
 		$('#message').val('');
@@ -43,9 +45,12 @@ $(function(){
 
 	chat.on('server messages', function(data){
 		var li = loadAvatar(data.user, data.image, data, 'user');
-
-		//alert('Server reply');
-
 		$('#messages-chatting').append(li);
 	});
+
+	// chat.on('connect', function(){
+	// 	chat.emit('ferret', 'tobi', function(data){
+	// 		console.log(data);
+	// 	});
+	// });
 });
