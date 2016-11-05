@@ -4,24 +4,37 @@ var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
 	name: {
-		type: String,
+		type: String, 
 		trim: true
-	},
+	}, 
 	email: {
-		type: String,
+		type: String, 
 		trim: true
-	},
-	passwordSalt: String,
-	passwordHash: String,
+	}, 
+	passwordSalt: String, 
+	passwordHash: String, 
 	avatar: {
-		type: String,
+		type: String, 
 		trim: true
-	},
-	role: {
-		type: Number,
-		'default': 0
-	}
+	}, 
+	isAdmin: {
+		type: Boolean, 
+		'default': false
+	}, 
+	friends: [
+		{
+			id: {
+				type: Schema.Types.ObjectId, 
+				ref: 'User'
+			}, 
+			uuid: {
+				type: String, 
+				trim: true
+			}
+		}
+	]
 });
+
 var passwordSalt = function(length){
 	return crypto.randomBytes(Math.ceil(length)).toString('base64').slice(0, length);
 }

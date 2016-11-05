@@ -1,6 +1,19 @@
 <div class="row">
   <div class="col-xs-6 col-md-4"></div>
-  <div class="col-xs-6 col-md-4">{{> form}}</div>
+  <div class="col-xs-6 col-md-4">
+    <form class="" id="login-form" action={{method}} method="POST" enctype="multipart/form-data">
+      <h2 class="form-signin-heading">
+        {{title}}
+      </h2>
+      <label for="inputEmail" class="sr-only">{{email}}</label>
+      <input type="email" id="inputEmail" name="email" class="form-control" placeholder="{{email}}" required>
+      <input type="password" id="inputPassword" name="password" class="form-control" placeholder="{{password}}" required>
+      {{#each actions}}
+        <button class="btn btn-lg btn-default btn-block" type="{{type}}">{{name}}
+        </button>
+      {{/each}}
+    </form>
+  </div>
   <div class="col-xs-6 col-md-4"></div>
 </div>
 

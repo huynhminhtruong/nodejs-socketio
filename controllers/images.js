@@ -10,7 +10,7 @@ function render(res, template, object) {
 
 module.exports = function(app, io) {
 	app.route('/images')
-	.get(authentication.verify, (req,res) => {
+	.get(authentication.verify, authentication.isAdmin, (req,res) => {
 		res.addScript('/js/image.js')
 		
 		Image.find({}, function(error, images){
@@ -22,7 +22,7 @@ module.exports = function(app, io) {
 	})
 
 	app.route('/images/add')
-	.get(authentication.verify, (req,res) => {
+	.get(authentication.verify, authentication.isAdmin, (req,res) => {
 		var template = './image/new', object = {
 			method: '/images/add',
 			title: 'Upload your picture',

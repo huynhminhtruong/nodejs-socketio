@@ -10,19 +10,21 @@
 	      	<a title="Send Mail" id="send-mail" class="navbar-brand header-site" href="/emails" active="{{mailActive}}">
 	      		<i class="glyphicon glyphicon-envelope"></i>
 	      	</a>
-	      	<a title="List Images" id="list-images" class="navbar-brand header-site" href="/images" active="{{imageActive}}">
-	      		<i class="glyphicon glyphicon-th"></i>
-	      	</a>
-	      	<a title="List Users" id="list-users" class="navbar-brand header-site" href="/users" active="{{userActive}}">
-	      		<i class="glyphicon glyphicon-th-list"></i>
-	      	</a>
+	      	{{#if isAdmin}}
+		      	<a title="List Images" id="list-images" class="navbar-brand header-site" href="/images" active="{{imageActive}}">
+		      		<i class="glyphicon glyphicon-th"></i>
+		      	</a>
+		      	<a title="List Users" id="list-users" class="navbar-brand header-site" href="/users" active="{{userActive}}">
+		      		<i class="glyphicon glyphicon-th-list"></i>
+		      	</a>
+	      	{{/if}}
 	    </div>
 
 	    <div class="nav navbar-nav navbar-right">
-	    	<a title="User" class="navbar-brand" href="/">
+	    	<a title="User" class="navbar-brand" href="/users/edit">
 	    		<i class="glyphicon glyphicon-user"></i>
 	    	</a>
-	      	<a title="Logout" class="navbar-brand" href="/create">
+	      	<a title="Logout" class="navbar-brand" href="/users/logout">
 	      		<i class="glyphicon glyphicon-log-out"></i>
 	      	</a>
 	    </div>

@@ -11,10 +11,6 @@ function storeAccessToken(req, res, user) {
 }
 
 module.exports = function(app, io){
-	// app.get('/', authentication.verify, (req, res) => {
-	//     res.redirect('/users/welcome?access_token=' + req.session.authentication)
-	// })
-
 	app.get('/', (req, res) => {
 		res.render('./about/about', {})
 	})
@@ -32,12 +28,11 @@ module.exports = function(app, io){
 		}
 
 		res.render('./login', {
-			method: '/login',
-			title: 'Please sign in',
-			email: 'Email address',
-			password: 'password',
-			action: 'Sign in',
-			isRegister: false
+			method: '/login', 
+			title: 'Please sign in', 
+			email: 'Your email', 
+			password: 'Password', 
+			actions: [{name: 'Sign in', type: 'submit'}]
 		})
 	}).post(uploads, (req, res) => {
 		User.findOne({email: req.body.email}).exec(function(error, user){
@@ -50,17 +45,26 @@ module.exports = function(app, io){
 		})
 	})
 
-	app.get('/users/welcome', authentication.verify, (req, res) => {
+	app.get('/users/welcome', authentication.verify, authentication.isAdmin, (req, res) => {
 		res.render('./user/welcome', {
-			user: req.user
+			name: req.user.name, 
+			avatar: req.user.avatar
 		})
 	})
 
-	app.get('/users/profile', authentication.verify, (req, res) => {
-		res.render('./user/profile', {
-			user: req.user
+	app.get('/users/edit', authentication.verify, authentication.isAdmin, (req, res) => {
+		res.render('./user/edit', {
+			method: '/users/edit', 
+			actions: [ 
+				{ name: 'Cancel', class: 'btn-default' }, 
+				{ name: 'Edit', class: 'btn-success' } 
+			], 
+			isRegister: false, 
+			name: req.user.name, 
+			email: req.user.email, 
+			avatar: req.user.avatar
 		})
-	}).post((req, res) => {
+	}).post(uploads, (req, res) => {
 
 	})
 
@@ -72,7 +76,7 @@ module.exports = function(app, io){
 			name: 'Your name', 
 			email: 'Your email',
 			password: 'Your password',
-			action: 'Register',
+			actions: [{name: 'Register'}],
 			isRegister: true
 		})
 	}).post(uploads, (req, res) => {
@@ -95,7 +99,7 @@ module.exports = function(app, io){
 	})
 
 	app.route('/users')
-	.get((req, res) => {
+	.get(authentication.verify, authentication.isAdmin, (req, res) => {
 		User.find({}).exec(function (error, users) {
 			if (error) {
 				console.log('Get error: ' + error)

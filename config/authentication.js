@@ -27,8 +27,15 @@ function getToken(req, res, next) {
 	next()
 }
 
+function isAdmin(req, res, next) {
+	res.locals.isAdmin = req.user.isAdmin
+
+	next()
+}
+
 module.exports = {
 	verify: verify, 
 	generateToken: generateToken, 
-	getToken: getToken
+	getToken: getToken, 
+	isAdmin: isAdmin
 }

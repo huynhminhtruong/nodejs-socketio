@@ -7,7 +7,10 @@
       </tr>
       {{#users}}
         <tr id="{{_id}}" class="users-list" style="cursor: pointer;">
-          <td style="vertical-align: middle;"><img class="avatar" src={{avatar}} /> {{name}}</td>
+          <td style="vertical-align: middle;">
+            <img class="avatar" src={{avatar}} /> {{name}}
+          </td>
+          <td id="" messages="0"></td>
         </tr>
       {{/users}}
     </table>

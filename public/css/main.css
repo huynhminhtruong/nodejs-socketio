@@ -1,3 +1,9 @@
+.user-avatar-edit {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
 .image {
   float: left;
   margin: 90px 0 0 140px;
