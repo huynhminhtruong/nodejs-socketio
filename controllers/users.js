@@ -11,6 +11,10 @@ function storeAccessToken(req, res, user) {
 }
 
 module.exports = function(app, io){
+	var newUser = io.of('/newuser').on('connection', function(socket) {
+		
+	})
+
 	app.get('/', (req, res) => {
 		res.render('./about/about', {})
 	})
@@ -46,6 +50,10 @@ module.exports = function(app, io){
 	})
 
 	app.get('/users/welcome', authentication.verify, authentication.isAdmin, (req, res) => {
+		newUser.emit('new user', {
+			user: req.user
+		})
+
 		res.render('./user/welcome', {
 			name: req.user.name, 
 			avatar: req.user.avatar
@@ -72,10 +80,11 @@ module.exports = function(app, io){
 	.get((req, res) => {
 		res.render('./user/register', {
 			method: '/users/new',
-			title: 'Register New Account',
+			title: 'Welcome New User',
 			name: 'Your name', 
 			email: 'Your email',
 			password: 'Your password',
+			register: 'register-image',
 			actions: [{name: 'Register'}],
 			isRegister: true
 		})

@@ -4,29 +4,22 @@
       <td colspan="2">
         <h2 class="form-signin-heading">
           <img src="{{avatar}}" class="user-avatar-edit" />
+          <br />
+          {{title}}
         </h2>
       </td>
     </tr>
     <tr>
-      <td>
-        <label for="inputName" class="">Your name</label>
-      </td>
       <td>
         <input type="text" id="inputName" name="name" class="form-control" placeholder="{{name}}" required autofocus>
       </td>
     </tr>
     <tr>
       <td>
-        <label for="inputFile" class="">Select your avatar</label>
-      </td>
-      <td>
         <input type="file" id="inputFile" name="file" class="form-control" style="visibility: visible;" required>
       </td>
     </tr>
     <tr>
-      <td>
-        <label for="inputEmail" class="">Your email</label>
-      </td>
       <td>
         <input type="email" id="inputEmail" name="email" class="form-control" placeholder="{{email}}" required>
       </td>
@@ -34,10 +27,7 @@
     {{#if isRegister}}
     <tr>
       <td>
-        <label for="inputPassword" class="sr-only">Your password</label>
-      </td>
-      <td>
-        <input type="password" id="inputPassword" name="email" class="form-control" placeholder="{{password}}" required>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="{{password}}" required>
       </td>
     </tr>
     {{/if}}
