@@ -14,17 +14,17 @@
       </tr>
       <tr id="{{_id}}" class="users-list" style="cursor: pointer;">
         <td>
-          <ul id="messages-chatting" style="list-style-type: none;">
-            
-          </ul>
-          <ul id="user-typing" style="list-style-type: none;"></ul>
+          <ul id="messages-chatting" class="chatting" style="list-style-type: none;"></ul>
         </td>
       </tr>
       <tr>
         <td>
+          <ul id="user-typing" style="list-style-type: none; visibility: hidden;">
+            <li id="notify-from-sender" style=""></li>
+          </ul>
           <form id="chatting" class="navbar-form navbar-left" role="search" style="width:100%;">
             <input id="message" autocomplete="off" style="width:70%;border:none;" placeholder="Enter your text" receiver="" />
-            <button id="send" user="{{name}}" value="{{id}}" avatar="{{image}}">{{action}}</button>
+            <button id="send" sender="{{name}}" value="{{id}}" avatar="{{image}}">{{action}}</button>
             <script src="/js/chatscript.js"></script>
           </form>
         </td>

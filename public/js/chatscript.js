@@ -5,7 +5,7 @@ $(function(){
 	function loadAvatar(user, image, data, permission) {
 		var li = $(
 			'<li class="" role="' + permission + '">' 
-				+ '<div class="">' 
+				+ '<div class="chat-avatar">' 
 				+ '<img class="avatar" />' + '<b></b></div>' 
 				+ '<p style="padding-left: 50px;"></p>' + '</li>'
 			);
@@ -32,12 +32,63 @@ $(function(){
 		});
 	}
 
-	$('tr.users-list').click(function(){
-		chat.emit('connect to client', $(this).attr('id'));
+	function selectUser() {
+		$('tr.users-list').click(function(){
+			chat.emit('connect to client', $(this).attr('id'));
 
-		$('#conversation-main').css({'visibility': 'hidden'});
-		$('table#user-list').css({'visibility': 'visible'});
-		$('#message').attr({'receiver': $(this).attr('id')});
+			$(this).find('td:eq(1)').html('');
+			$('#conversation-main').css({'visibility': 'hidden'});
+			$('table#user-list').css({'visibility': 'visible'});
+			$('#message').attr({'receiver': $(this).attr('id')});
+
+			senderTyping('#message', '#user-typing', $('#send').attr('value'), $('#send').attr('sender'), $('#message').attr('receiver'));
+		});
+	}
+
+	function sendMessages() {
+		$('form#chatting').submit(function(){
+			chat.emit('chat messages', {
+				sender: document.getElementById('send').value, 
+				receiver: document.getElementById('message').getAttribute('receiver'), 
+				name: document.getElementById('send').getAttribute('sender'), 
+				image: document.getElementById('send').getAttribute('avatar'), 
+				message: document.getElementById('message').value
+			});
+
+			$('#message').val('');
+
+			return false;
+		});
+	}
+
+	function senderTyping(input, listen, senderId, senderName, receiverId) {
+		$(input).keydown(function(){
+			chat.emit('sender start typing', { 
+				sender: senderId, 
+				senderName: senderName, 
+				receiver: receiverId
+			});
+		});
+
+		$(input).keyup(function(){
+			chat.emit('sender stop typing', { 
+				sender: senderId, 
+				senderName: senderName, 
+				receiver: receiverId
+			});
+		});
+	}
+
+	function hiddenNotify() {
+		
+	}
+
+	selectUser();
+	sendMessages();
+
+	chat.emit('login', {
+		userId: document.getElementById('send').value, 
+		connectId: document.getElementById('send').value
 	});
 
 	chat.on('private messages', function(data){
@@ -50,30 +101,11 @@ $(function(){
 	});
 
 	chat.on('server messages', function(data){
-		var li = loadAvatar(data.user, data.image, data, 'user');
+		var li = loadAvatar(data.senderName, data.image, data, 'user');
 
 		console.log('Server reply: ' + data);
 
 		$('#messages-chatting').append(li);
-	});
-
-	chat.emit('login', {
-		userId: document.getElementById('send').value, 
-		connectId: document.getElementById('send').value
-	});
-
-	$('form#chatting').submit(function(){
-		chat.emit('chat messages', {
-			sender: document.getElementById('send').value, 
-			receiver: document.getElementById('message').getAttribute('receiver'), 
-			name: document.getElementById('send').getAttribute('user'), 
-			image: document.getElementById('send').getAttribute('avatar'), 
-			message: document.getElementById('message').value
-		});
-
-		$('#message').val('');
-
-		return false;
 	});
 
 	chat.on('users online', function(data){
@@ -81,9 +113,17 @@ $(function(){
 		$('#user-list > tbody > tr.users-list').each(function(){
 			if($(this).attr('id') == data.userId){
 				$(this).attr({'online': data.connectId});
-				loadUserStatus();
 			}
 		});
+	});
+
+	chat.on('notify receiver', function(data){
+		$('#user-typing > li:first').html(data.senderName + ' is typing...');
+		$('#user-typing').css({ 'visibility': 'visible' });
+	});
+
+	chat.on('stop receive notify', function(data){
+		$('#user-typing').css({ 'visibility': 'hidden' });
 	});
 
 	// chat.on('new connection', function(data){

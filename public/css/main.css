@@ -1,3 +1,34 @@
+.chatting p {
+  text-align: left;
+  float: left;
+  display: inline-block;
+  margin-right: 20px;
+  margin-bottom: 30px;
+  padding: 25px 34px;
+  min-width: 160px;
+  min-height: 10px;
+  max-width: 510px;
+  background-color: #FFF;
+  border-radius: 3px;
+  box-shadow: 0px 3px 3px #E3E4E6;
+  color: #637277;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.chat-avatar {
+  clear: both;
+  float: left;
+  height: 160px;
+  width: 80px;
+  text-align: center;
+  overflow: hidden;
+}
+
+table.users-list > tbody > tr > td {
+  vertical-align: middle;
+}
+
 .user-avatar-edit {
   width: 200px;
   height: 200px;

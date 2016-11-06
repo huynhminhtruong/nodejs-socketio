@@ -7,7 +7,9 @@ module.exports = function(app, io){
 	})
 
 	app.get('/chat/:id', authentication.verify, authentication.isAdmin, (req, res) => {
-		User.find({}).exec(function (error, users) {
+		var filter = (req.user.isAdmin) ? (false) : (true)
+		
+		User.find({isAdmin: filter}).exec(function (error, users) {
 			if (error) {
 				console.log('Get error: ' + error)
 			}
@@ -50,6 +52,7 @@ module.exports = function(app, io){
 
 			// Send private message to other sockets in room except sender
 			socket.broadcast.to(data.receiver).emit('private messages', {
+				senderName: data.name,
 				sender: data.sender,
 				receiver: data.receiver,
 				message: data.message,
@@ -58,10 +61,26 @@ module.exports = function(app, io){
 
 			// Send message to all sockets in room include sender
 			chat.in(data.receiver).emit('server messages', {
+				senderName: data.name,
 				sender: data.sender,
 				receiver: data.receiver,
 				message: data.message,
 				image: data.image
+			})
+		})
+
+		socket.on('sender start typing', function(data) {
+			console.log('Sender: ', data)
+			socket.broadcast.to(data.sender).emit('notify receiver', {
+				sender: data.sender, 
+				senderName: data.senderName
+			})
+		})
+
+		socket.on('sender stop typing', function(data) {
+			console.log('Sender stop typing: ', data)
+			socket.broadcast.to(data.sender).emit('stop receive notify', {
+				senderName: data.senderName
 			})
 		})
 	})
