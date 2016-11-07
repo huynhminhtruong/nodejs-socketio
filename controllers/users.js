@@ -10,6 +10,20 @@ function storeAccessToken(req, res, user) {
 	return authentication.generateToken(req, res, user)
 }
 
+function renderForm(res, template, actions, errors) {
+	res.render(template, {
+		method: '/users/new',
+		title: 'Welcome New User',
+		name: 'Your name', 
+		email: 'Your email',
+		password: 'Your password',
+		errors: errors,
+		register: 'register-image',
+		actions: actions,
+		isRegister: true
+	})
+}
+
 module.exports = function(app, io){
 	var newUser = io.of('/newuser').on('connection', function(socket) {
 		
@@ -71,21 +85,12 @@ module.exports = function(app, io){
 			avatar: req.user.avatar
 		})
 	}).post(uploads, (req, res) => {
-
+		
 	})
 
 	app.route('/users/new')
 	.get((req, res) => {
-		res.render('./user/register', {
-			method: '/users/new',
-			title: 'Welcome New User',
-			name: 'Your name', 
-			email: 'Your email',
-			password: 'Your password',
-			register: 'register-image',
-			actions: [{name: 'Register'}],
-			isRegister: true
-		})
+		renderForm(res, './user/register', [{name: 'Register', class: 'btn-success'}])
 	}).post(uploads, (req, res) => {
 		const name = req.body.name, email = req.body.email, 
 		password = req.body.password, user = new User()
@@ -107,17 +112,7 @@ module.exports = function(app, io){
 				errors.email = error.errors.email.value
 				errors.message = error.errors.email.message
 				
-				res.render('./user/register', {
-					method: '/users/new',
-					title: 'Welcome New User',
-					name: 'Your name', 
-					email: 'Your email',
-					password: 'Your password',
-					errors: errors,
-					register: 'register-image',
-					actions: [{name: 'Register'}],
-					isRegister: true
-				})
+				renderForm(res, './user/register', [{name: 'Register', class: 'btn-success'}], errors)
 			} else {
 				res.redirect('/users/welcome?access_token=' + storeAccessToken(req, res, user))
 			}

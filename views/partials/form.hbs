@@ -23,12 +23,14 @@
       <td>
         <input type="email" id="inputEmail" name="email" class="form-control" placeholder="{{email}}" required>
       </td>
-      {{#if errors}}
-      <td>
-        <p class="errors">{{errors.email}} {{errors.message}}</p>
-      </td>
-      {{/if}}
     </tr>
+    {{#if errors}}
+    <tr>
+      <td>
+        <p id="errorEmail" class="errors">{{errors.email}} {{errors.message}}</p>
+      </td>
+    </tr>
+    {{/if}}
     {{#if isRegister}}
     <tr>
       <td>
@@ -36,13 +38,9 @@
       </td>
     </tr>
     {{/if}}
-    <tr>
-      <td colspan="2">
-      {{#each actions}}
-          <button class="btn btn-lg {{class}} btn-block" type="submit">{{name}}
-          </button>
-      {{/each}}
-      </td>
-    </tr>
-  </table> 
+  </table>
+  {{#each actions}}
+    <button class="btn btn-lg {{class}} btn-block" type="submit" style="margin-top: 15px;">{{name}}
+    </button>
+  {{/each}}
 </form>
