@@ -101,7 +101,26 @@ module.exports = function(app, io){
 		fs.unlink(req.file.path)
 
 		user.save(function (error, user) {
-			res.redirect('/users/welcome?access_token=' + storeAccessToken(req, res, user))
+			var errors = {}
+
+			if (error) {
+				errors.email = error.errors.email.value
+				errors.message = error.errors.email.message
+				
+				res.render('./user/register', {
+					method: '/users/new',
+					title: 'Welcome New User',
+					name: 'Your name', 
+					email: 'Your email',
+					password: 'Your password',
+					errors: errors,
+					register: 'register-image',
+					actions: [{name: 'Register'}],
+					isRegister: true
+				})
+			} else {
+				res.redirect('/users/welcome?access_token=' + storeAccessToken(req, res, user))
+			}
 		})
 	})
 

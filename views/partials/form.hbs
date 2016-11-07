@@ -23,6 +23,11 @@
       <td>
         <input type="email" id="inputEmail" name="email" class="form-control" placeholder="{{email}}" required>
       </td>
+      {{#if errors}}
+      <td>
+        <p class="errors">{{errors.email}} {{errors.message}}</p>
+      </td>
+      {{/if}}
     </tr>
     {{#if isRegister}}
     <tr>

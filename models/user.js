@@ -9,7 +9,11 @@ var UserSchema = new Schema({
 	}, 
 	email: {
 		type: String, 
-		trim: true
+		trim: true, 
+		index: {
+			unique: true	
+		}, 
+		require: true
 	}, 
 	passwordSalt: String, 
 	passwordHash: String, 
@@ -35,6 +39,8 @@ var UserSchema = new Schema({
 	]
 });
 
+UserSchema.index({ name: 1, email: 1 }, { unique: true })
+
 var passwordSalt = function(length){
 	return crypto.randomBytes(Math.ceil(length)).toString('base64').slice(0, length);
 }
@@ -48,6 +54,12 @@ UserSchema.methods.generatePassword = function(password){
 	this.passwordSalt = salt;
 	this.passwordHash = sha512(password, salt);
 }
+
+UserSchema.path('email').validate(function(value, done){
+	this.model('User').count({email: value}, function(error, count){
+		done(!count)
+	})
+}, 'already exists')
 
 UserSchema.methods.validPassword = function(password){
 	return this.passwordHash == sha512(password, this.passwordSalt);
