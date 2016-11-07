@@ -33,9 +33,16 @@ function isAdmin(req, res, next) {
 	next()
 }
 
+function deleteToken(req, res, next) {
+	delete req.session.authorization
+
+	next()
+}
+
 module.exports = {
 	verify: verify, 
 	generateToken: generateToken, 
 	getToken: getToken, 
+	deleteToken: deleteToken, 
 	isAdmin: isAdmin
 }

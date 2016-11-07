@@ -24,9 +24,16 @@
 	    	<a title="User" class="navbar-brand" href="/users/edit">
 	    		<i class="glyphicon glyphicon-user"></i>
 	    	</a>
-	      	<a title="Logout" class="navbar-brand" href="/users/logout">
+	      	<a id="logout" title="Logout" class="navbar-brand">
 	      		<i class="glyphicon glyphicon-log-out"></i>
 	      	</a>
+	      	<script>
+		      	$('a#logout').click(function() {
+		      		$.post('/users/logout', function(data) {
+		      			if(data.logout) window.location.href = '/';
+		      		});
+		      	});
+	      	</script>
 	    </div>
   	</div>
 </nav>

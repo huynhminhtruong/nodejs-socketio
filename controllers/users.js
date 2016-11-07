@@ -19,10 +19,8 @@ module.exports = function(app, io){
 		res.render('./about/about', {})
 	})
 
-	app.route('/logout').get((req,res) => {
-		
-	}).post((req,res) => {
-		
+	app.route('/users/logout').post(authentication.deleteToken, (req,res) => {
+		res.status(200).json({ logout: true })
 	})
 
 	app.route('/login')
