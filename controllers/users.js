@@ -62,10 +62,6 @@ module.exports = function(app, io){
 	})
 
 	app.get('/users/welcome', authentication.verify, authentication.isAdmin, (req, res) => {
-		newUser.emit('new user', {
-			user: req.user
-		})
-
 		res.render('./user/welcome', {
 			name: req.user.name, 
 			avatar: req.user.avatar
@@ -85,7 +81,7 @@ module.exports = function(app, io){
 			avatar: req.user.avatar
 		})
 	}).post(uploads, (req, res) => {
-		
+
 	})
 
 	app.route('/users/new')
@@ -114,6 +110,10 @@ module.exports = function(app, io){
 				
 				renderForm(res, './user/register', [{name: 'Register', class: 'btn-success'}], errors)
 			} else {
+				newUser.emit('new user', {
+					user: req.user
+				})
+				
 				res.redirect('/users/welcome?access_token=' + storeAccessToken(req, res, user))
 			}
 		})
