@@ -1,26 +1,19 @@
-function partition(array, start, end) {
-	var pivot = array[start], i = start + 1
+function insert_sort (array) {
+	var p, max
 
-	for(var n = start + 1; n <= end; n++){
-		if(array[n] < pivot){
-			var tmp = array[n]
-			array[n] = array[i]
-			array[i] = tmp
-			i += 1
+	for(var i = 1; i < array.length; i++) {
+		max = array[i]
+		p = i - 1
+
+		while (p >= 0 && array[p] > max) {
+			array[p + 1] = array[p]
+			p--;
 		}
+
+		array[p + 1] = max
 	}
 
-	var p = array[start]
-	array[start] = array[i - 1]
-	array[i - 1] = p
-
-	return i - 1
+	return array
 }
 
-function array(array, start, end) {
-
-}
-
-function sort(array) {
-
-}
+console.log(insert_sort([3, 2, 1, 5, 6, 4, 8, 7, 9]))
