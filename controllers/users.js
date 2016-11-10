@@ -120,16 +120,19 @@ module.exports = function(app, io){
 	})
 
 	app.route('/users')
-	.get(authentication.verify, authentication.isAdmin, (req, res) => {
+	.get((req, res) => {
 		User.find({}).exec(function (error, users) {
 			if (error) {
 				console.log('Get error: ' + error)
 			}
-			res.render('./user/users', {
-				users: users,
-				isAdmin: true,
-				userActive: true
-			})
+
+			res.status(200).json(users)
+
+			// res.render('./user/users', {
+			// 	users: users,
+			// 	isAdmin: true,
+			// 	userActive: true
+			// })
 		})
 	})
 }

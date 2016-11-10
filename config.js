@@ -70,6 +70,9 @@ module.exports = function(app, io){
 		res.addScript('/js/angular.min.js')
 		res.addScript('/js/bootbox.min.js')
 		res.addScript('/socket.io/socket.io.js')
+		res.addScript('/js/core.js')
+		res.addScript('/js/client/user/userSvc.js')
+		res.addScript('/js/client/user/userCtrl.js')
 
 		next()
 	})
