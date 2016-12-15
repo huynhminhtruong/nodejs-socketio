@@ -6,6 +6,7 @@ function verify(req, res, next) {
 	if (token) {
 		jwt.verify(token, config.secret, function(error, decode){
 			req.user = decode.user
+			res.locals.isLogin = true
 			next()
 		})
 	} else {
@@ -13,7 +14,7 @@ function verify(req, res, next) {
 	}
 }
 
-function generateToken(req, res, user) {
+function generateToken(req, user) {
 	var token = jwt.sign({
 			user: user, 
 			agent: req.headers['user-agent'], 
