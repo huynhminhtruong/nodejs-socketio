@@ -4,10 +4,9 @@ const User = require('../models/user'),
 		uploads = multer({dest: './public/uploads'}).single('file'), 
 		authentication = require('../config/authentication')
 
-function storeAccessToken(req, res, user) {
-	req.session.authorization = authentication.generateToken(req, res, user)
-
-	return authentication.generateToken(req, res, user)
+function storeAccessToken(req, user, next) {
+	req.session.authorization = authentication.generateToken(req, user)
+	next()
 }
 
 function renderForm(res, template, actions, errors) {
@@ -24,12 +23,16 @@ function renderForm(res, template, actions, errors) {
 	})
 }
 
+function redirect(res, url) {
+	return res.redirect(url)
+}
+
 module.exports = function(app, io){
 	var newUser = io.of('/newuser').on('connection', function(socket) {
 		
 	})
 
-	app.get('/', (req, res) => {
+	app.get('/', authentication.verify, (req, res) => {
 		res.render('./about/about', {})
 	})
 
@@ -53,15 +56,20 @@ module.exports = function(app, io){
 	}).post(uploads, (req, res) => {
 		User.findOne({email: req.body.email}).exec(function(error, user){
 			if (error) {
-				next(error)
+				return next(error)
 			}
 			if (user.validPassword(req.body.password)) {
-				res.redirect('/users/welcome?access_token=' + storeAccessToken(req, res, user))
+				storeAccessToken(req, user, (access_token) => {
+					res.redirect('/users/welcome')
+				})
+			} else {
+				return res.status(500).json({ 'error': 'Incorrect password' })
 			}
 		})
 	})
 
 	app.get('/users/welcome', authentication.verify, authentication.isAdmin, (req, res) => {
+		console.log('Login')
 		res.render('./user/welcome', {
 			name: req.user.name, 
 			avatar: req.user.avatar

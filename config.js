@@ -36,7 +36,7 @@ module.exports = function(app, io){
 
 			return null
 		}
-	}).unless({ path: ['/', '/login']}))
+	}).unless({ path: ['/', '/login'] }))
 
 	app.use(function(req, res, next) {
 	    res.header('Access-Control-Allow-Origin', '*')

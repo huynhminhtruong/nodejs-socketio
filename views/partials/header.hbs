@@ -24,9 +24,11 @@
 	    	<a title="User" class="navbar-brand" href="/users/edit">
 	    		<i class="glyphicon glyphicon-user"></i>
 	    	</a>
-	      	<a id="logout" title="Logout" class="navbar-brand">
+	    	{{#if isLogin}}
+	    	<a id="logout" title="Logout" class="navbar-brand">
 	      		<i class="glyphicon glyphicon-log-out"></i>
 	      	</a>
+	    	{{/if}}
 	      	<script>
 		      	$('a#logout').click(function() {
 		      		$.post('/users/logout', function(data) {
