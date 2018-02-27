@@ -3,9 +3,8 @@ const express = require('express'),
 	port = process.env.PORT || 9000, 
 	io = require('socket.io').listen(app.listen(port))
 
-require('./config')(app, io);
-require('./controllers/users')(app, io);
-require('./controllers/images')(app, io);
-require('./controllers/chat')(app, io);
+require('./config')(app, io)
+require('./controllers/users')(app, io)
+require('./talk')(app, io)
 
-console.log('Server is running on ' + port);
+console.log('Server is running on ' + port)
