@@ -4,7 +4,8 @@
   "description": "NodeJS Example",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
+    "server": "nodemon app.js",
+    "start": "npm install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -41,5 +42,8 @@
     "request": "^2.75.0",
     "router": "^1.1.4",
     "socket.io": "1.0.6"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   }
 }
